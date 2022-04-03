@@ -1,50 +1,36 @@
 import {useState} from 'react'
 import './App.css';
 
-const datas= [
-  {
-    id: 1,
-    name: 'Xuân Nhi'
-  },
-  {
-    id: 2,
-    name: 'Bé Sang'
-  },
-  {
-    id: 3,
-    name: 'Chị Xuân Nhi yêu Bé Sang'
-  }
-];
+
 function App() {
-  const [checked, setChecked] = useState([]);
-  console.log(checked)
-  const handleSubmit = () =>{
-    console.log({ids: checked});
+  const [name, setName] = useState('')
+  const [items, setItems] = useState([]);
+
+  const Add = (name)=>{
+    setItems(prevState=>[...prevState, {name: name, done: true}]);
+    setName('');
   }
-  const handleCheck = (id) =>{
-    setChecked(prevState =>{
-      const isChecked = checked.includes(id);
-      if(isChecked){
-        return checked.filter(item => item !== id)
-      }else{
-        return [...prevState, id];
-      }
-    });
+
+  const Delete = (value) =>{
+    setItems(items.filter(item => item.name!==value))
   }
+
   return (
     <div style={{padding: '32px'}}>
-      {datas.map(data=>(
-        <div key={data.id}>
-          <input 
-            type='checkbox' 
-            checked={checked.includes(data.id)}
-            onChange={()=>handleCheck(data.id)}
-          />
-          {data.name}
-        </div>
-      ))}
-      
-      <button onClick={handleSubmit}>Register</button>
+  
+    <input 
+      value={name}
+      onChange={e=>setName(e.target.value)}
+    />
+    <button onClick={()=>Add(name)}>Add</button>
+    <div>
+      {items.map((item,index)=>{
+        return  <div key={index} style={{marginTop: '5px'}}>
+                {item.name}<button onClick={()=>Delete(item.name)}>xóa</button>
+                <button >Hoàn thành</button>
+                </div>
+      })}
+    </div>
     </div>
   );
 }
