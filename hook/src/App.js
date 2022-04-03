@@ -27,7 +27,7 @@ function App() {
       {items.map((item,index)=>{
         return  <div key={index} style={{marginTop: '5px'}}>
                 {item.name}<button onClick={()=>Delete(item.name)}>xóa</button>
-                <button >Hoàn thành 1</button>
+                <button >Hoàn thành 2</button>
                 </div>
       })}
     </div>
