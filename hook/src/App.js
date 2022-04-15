@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import Content from './content';
 import './App.css';
 
 
@@ -15,6 +16,7 @@ function App() {
     setItems(items.filter(item => item.name!==value))
   }
 
+  const [show, setShow] = useState(false);
   return (
     <div style={{padding: '32px'}}>
   
@@ -31,6 +33,8 @@ function App() {
                 </div>
       })}
     </div>
+    <button onClick={()=>setShow(!show)}>Toggle</button>
+    {show&&<Content/>}
     </div>
   );
 }
