@@ -1,22 +1,33 @@
+import { cleanup } from '@testing-library/react';
 import {useState, useEffect} from 'react'
-const tasks=['posts', 'comments', 'albums'];
 
 function Content(){
-    const [time, setTime] = useState(10);
+    const [avatar, setAvatar] = useState();
 
     useEffect(()=>{
-        const timerId = setInterval(()=>{
-            setTime(prevState =>prevState-1);
-        },1000)
-
         return ()=>{
-            console.log('clearInterval-setInterVal');
-            clearInterval(timerId);
+            avatar && URL.revokeObjectURL(avatar.preview);
         }
-    },[])
+    },[avatar])
+    const handlePreviewAvatar =(e)=>{
+        const file = e.target.files[0];
+        file.preview = URL.createObjectURL(file);
+        console.log(file.preview);
+        setAvatar(file);
+    }
+    
     return(
         <div>
-            {time}
+            <input
+                type='file'
+                onChange={handlePreviewAvatar}
+                alt='Sang pro 123'
+            />
+            <br/>
+            {avatar&&(<video width='300px' height='600px' controls>
+                <source src={avatar.preview} type="video/mp4"/>
+                <source src={avatar.preview} type="video/ogg"/>
+            </video>)}
         </div>
     )
 }
