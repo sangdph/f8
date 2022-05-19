@@ -18,6 +18,7 @@ function Content(){
     
     return(
         <div>
+            Sang đẹp trai siêu cấp vip pro đến nổi Diễm Ngân cũng phải yêu.
             <input
                 type='file'
                 onChange={handlePreviewAvatar}
