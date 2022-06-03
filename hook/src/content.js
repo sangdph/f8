@@ -1,34 +1,47 @@
 import { cleanup } from '@testing-library/react';
 import {useState, useEffect} from 'react'
-
+const lists = [
+    {
+        id: 1,
+        name: "Sang là con cá siêu sấu",
+    },{
+        id: 2,
+        name: "Con gà ăn con thỏ",
+    },{
+        id: 3,
+        name: "Siêu khủng long ham ăn"
+    }
+]
 function Content(){
-    const [avatar, setAvatar] = useState();
+    const [listId, setListId] = useState(1);
 
     useEffect(()=>{
-        return ()=>{
-            avatar && URL.revokeObjectURL(avatar.preview);
+        const handleComment = ({detail})=>{
+            console.log(detail)
         }
-    },[avatar])
-    const handlePreviewAvatar =(e)=>{
-        const file = e.target.files[0];
-        file.preview = URL.createObjectURL(file);
-        console.log(file.preview);
-        setAvatar(file);
-    }
-    
-    return(
+        window.addEventListener(`lesson-${listId}`, handleComment)
+        return ()=>{
+            window.removeEventListener(`lesson-${listId}`,handleComment);
+        }
+    },[listId])
+
+
+    return (
         <div>
-            Sang đẹp trai siêu cấp vip pro đến nổi Diễm Ngân cũng phải yêu.
-            <input
-                type='file'
-                onChange={handlePreviewAvatar}
-                alt='Sang pro 123'
-            />
-            <br/>
-            {avatar&&(<video width='300px' height='600px' controls>
-                <source src={avatar.preview} type="video/mp4"/>
-                <source src={avatar.preview} type="video/ogg"/>
-            </video>)}
+            {
+                lists.map((list)=>(
+                    <li key={list.id}
+                        style={{
+                            color: list.id === listId? "yellow": "purple",
+                            backgroundColor: list.id === listId? "purple" : "yellow",
+                            cursor: "pointer"
+                        }}
+                        onClick={()=>setListId(list.id)}
+                    >
+                        {list.name}
+                    </li>
+                ))
+            }
         </div>
     )
 }
