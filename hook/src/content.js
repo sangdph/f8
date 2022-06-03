@@ -1,34 +1,50 @@
 import { cleanup } from '@testing-library/react';
 import {useState, useEffect} from 'react'
 
-function Content(){
-    const [avatar, setAvatar] = useState();
-
-    useEffect(()=>{
-        return ()=>{
-            avatar && URL.revokeObjectURL(avatar.preview);
-        }
-    },[avatar])
-    const handlePreviewAvatar =(e)=>{
-        const file = e.target.files[0];
-        file.preview = URL.createObjectURL(file);
-        console.log(file.preview);
-        setAvatar(file);
+const lessons = [
+    {
+        id: 1,
+        name: "Huỳnh Thị Diễm Ngân"
+    },
+    {
+        id: 2,
+        name: "Đặng Phan Hoàng Sang",
+    },
+    {
+        id:3,
+        name: "Con cá siêu xấu pro vip"
     }
+]
+function Content(){
+    const [lessonId, setLessonId] = useState(1);
     
+    useEffect(()=>{
+        const handleComment = ({detail}) =>{
+            console.log(detail);
+        }
+        window.addEventListener(`lesson-${lessonId}`, handleComment);
+
+        return ()=>{
+            window.removeEventListener(`lesson-${lessonId}`, handleComment);
+
+        }
+    },[lessonId]);
     return(
         <div>
-            Sang đẹp trai siêu cấp vip pro đến nổi Diễm Ngân cũng phải yêu.
-            <input
-                type='file'
-                onChange={handlePreviewAvatar}
-                alt='Sang pro 123'
-            />
-            <br/>
-            {avatar&&(<video width='300px' height='600px' controls>
-                <source src={avatar.preview} type="video/mp4"/>
-                <source src={avatar.preview} type="video/ogg"/>
-            </video>)}
+            <ul>
+                {lessons.map(lesson =>(
+                    <li key={lesson.id}
+                        style={{color:lessonId===lesson.id?
+                            "red":
+                            "green"
+                            ,cursor:"pointer"
+                        }}
+                        onClick={()=>setLessonId(lesson.id)}
+                    >
+                        {lesson.name}
+                    </li>
+                ))}
+            </ul>
         </div>
     )
 }
